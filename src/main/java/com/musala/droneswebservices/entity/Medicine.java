@@ -18,6 +18,7 @@ public class Medicine {
     private  Long id;
     private String name;
     private String code;
+    private float weight;
     private String image;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drone_id", nullable = false)

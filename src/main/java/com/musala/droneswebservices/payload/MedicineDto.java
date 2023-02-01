@@ -11,6 +11,7 @@ public class MedicineDto {
     @Pattern(regexp = "[A-Z0-9\\-\\_]+",message = "Only upper case letters, numbers , underscores and dashes are allowed")
     private String code;
     private String image;
+    private float weight;
     private Long droneId;
 
 }
