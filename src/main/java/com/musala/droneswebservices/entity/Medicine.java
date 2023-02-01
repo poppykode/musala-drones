@@ -1,15 +1,12 @@
 package com.musala.droneswebservices.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//Each **Medication** has:
-//        - name (allowed only letters, numbers, ‘-‘, ‘_’);
-//        - weight;
-//        - code (allowed only upper case letters, underscore and numbers);
-//        - image (picture of the medication case).
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
