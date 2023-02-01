@@ -20,7 +20,8 @@ public class Medicine {
     private String code;
     private String image;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drone_id")
+    @JoinColumn(name = "drone_id", nullable = false)
     private Drone drone;
+
 
 }
