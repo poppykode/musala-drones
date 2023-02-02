@@ -12,7 +12,7 @@
 	<artifactId>drones-web-services</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>drones-web-services</name>
-	<description>interview exercise on drones transpotation</description>
+	<description>interview exercise on drones transportation</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
