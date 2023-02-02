@@ -6,6 +6,7 @@ import com.musala.droneswebservices.entity.Medicine;
 import com.musala.droneswebservices.exception.DronesAPIException;
 import com.musala.droneswebservices.exception.ResourceNotFoundException;
 import com.musala.droneswebservices.payload.MedicineDto;
+import com.musala.droneswebservices.payload.MedicineRequest;
 import com.musala.droneswebservices.repository.DroneRepository;
 import com.musala.droneswebservices.repository.MedicineRepository;
 import com.musala.droneswebservices.services.MedicineService;
@@ -23,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicineServiceImpl implements MedicineService {
@@ -80,19 +83,26 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public MedicineDto loadMedications(Long droneId,String name, String filePath, String code, float weight) {
+    public MedicineDto loadMedications(Long droneId, String filePath, MedicineRequest medicineRequest) {
         Drone drone = droneRepository.findById(droneId).orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId));
         Medicine medicine = new Medicine();
         medicine.setDrone(drone);
         medicine.setImage(filePath);
-        medicine.setName(name);
-        medicine.setCode(code);
-        medicine.setWeight(weight);
+        medicine.setName(medicineRequest.getName());
+        medicine.setCode(medicineRequest.getCode());
+        medicine.setWeight(medicineRequest.getWeight());
         return mapToDto( medicineRepository.save(medicine));
     }
+
+    @Override
+    public List<MedicineDto> findLoadedMedicationsByDroneId(Long droneId) {
+        List<Medicine> drone = medicineRepository.findByDroneId(droneId);
+        return drone.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
     private MedicineDto mapToDto(Medicine medicine){
         MedicineDto medicineDto = new MedicineDto();
-        medicineDto.setDroneId(medicine.getId());
+        medicineDto.setDroneId(medicine.getDrone().getId());
         medicineDto.setImage(medicine.getImage());
         medicineDto.setName(medicine.getName());
         medicineDto.setCode(medicine.getCode());

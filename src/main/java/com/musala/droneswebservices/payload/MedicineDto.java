@@ -1,6 +1,6 @@
 package com.musala.droneswebservices.payload;
 
-import jakarta.validation.constraints.Pattern;
+import com.musala.droneswebservices.entity.Drone;
 import lombok.Data;
 
 @Data
