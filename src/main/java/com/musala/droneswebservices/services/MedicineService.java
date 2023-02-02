@@ -10,5 +10,5 @@ public interface MedicineService {
 
     public Resource loadFileAsResource(String fileName);
 
-    public MedicineDto saveDocument(Long droneId,  String name, String filePath,String code,String weight);
+    public MedicineDto loadMedications(Long droneId, String name, String filePath, String code, float weight);
 }
