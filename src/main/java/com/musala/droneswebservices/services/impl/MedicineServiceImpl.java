@@ -88,9 +88,9 @@ public class MedicineServiceImpl implements MedicineService {
         medicine.setName(name);
         medicine.setCode(code);
         medicine.setWeight(weight);
-        return maptoDto( medicineRepository.save(medicine));
+        return mapToDto( medicineRepository.save(medicine));
     }
-    private MedicineDto maptoDto(Medicine medicine){
+    private MedicineDto mapToDto(Medicine medicine){
         MedicineDto medicineDto = new MedicineDto();
         medicineDto.setDroneId(medicine.getId());
         medicineDto.setImage(medicine.getImage());
