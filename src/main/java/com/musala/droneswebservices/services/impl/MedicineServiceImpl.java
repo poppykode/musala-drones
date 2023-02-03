@@ -13,6 +13,7 @@ import com.musala.droneswebservices.services.DroneService;
 import com.musala.droneswebservices.services.MedicineService;
 import com.musala.droneswebservices.utils.AppConstants;
 import com.musala.droneswebservices.utils.ObjectMappers;
+import com.musala.droneswebservices.utils.Validators;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,30 +53,6 @@ public class MedicineServiceImpl implements MedicineService {
         } catch (Exception ex) {
             throw new DronesAPIException(
                     "Unable to create the directory where the uploaded files will be stored.", ex);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         }
     }
@@ -125,8 +102,8 @@ public class MedicineServiceImpl implements MedicineService {
         Medicine medicine = new Medicine();
         medicine.setDrone(drone);
         medicine.setImage(filePath);
-        medicine.setName(medicineRequest.getName());
-        medicine.setCode(medicineRequest.getCode());
+        medicine.setName(Validators.validateName(medicineRequest.getName()));
+        medicine.setCode(Validators.validateCode( medicineRequest.getCode()));
         medicine.setWeight(medicineRequest.getWeight());
         return ObjectMappers.mapToDto( medicineRepository.save(medicine));
     }

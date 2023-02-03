@@ -34,8 +34,8 @@ public class MedicineController {
     @PostMapping("/load-drone/{droneId}")
     public ResponseEntity<MedicineDto> uploadFile(@Valid @RequestParam("image") MultipartFile image,
                                                   @PathVariable Long droneId,
-                                                  @RequestParam @Pattern(regexp = "[A-Za-z0-9-_]",message = "Only letters, numbers , underscores and dashes are allowed") String name,
-                                                  @RequestParam  @Pattern(regexp = "[A-Z0-9-_]",message = "Only upper case letters, numbers , underscores and dashes are allowed") String code,
+                                                  @RequestParam  String name,
+                                                  @RequestParam  String code,
                                                   @RequestParam float weight) {
         logger.info(name + " weight is "+ weight);
         String fileName = medicineService.storeFile(image);
