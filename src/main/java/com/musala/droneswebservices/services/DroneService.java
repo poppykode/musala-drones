@@ -9,5 +9,6 @@ public interface DroneService {
 
     DroneDto registerDrone(DroneDto droneDto);
     List<DroneDto> availableDrones();
+    int checkDroneBatteryLevel(Long droneId);
 
 }

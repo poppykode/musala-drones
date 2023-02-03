@@ -2,6 +2,7 @@ package com.musala.droneswebservices.services.impl;
 
 import com.musala.droneswebservices.entity.Drone;
 import com.musala.droneswebservices.entity.State;
+import com.musala.droneswebservices.exception.ResourceNotFoundException;
 import com.musala.droneswebservices.payload.DroneDto;
 import com.musala.droneswebservices.repository.DroneRepository;
 import com.musala.droneswebservices.services.DroneService;
@@ -10,6 +11,7 @@ import com.musala.droneswebservices.utils.ObjectMappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +39,9 @@ public class DroneServiceImpl implements DroneService {
                 .collect(Collectors.toList());
     }
 
-    //   manual conversion
-
+    @Override
+    public int checkDroneBatteryLevel(Long droneId) {
+        return  droneRepository.findById(droneId).
+                orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId)).getCapacity();
+    }
 }

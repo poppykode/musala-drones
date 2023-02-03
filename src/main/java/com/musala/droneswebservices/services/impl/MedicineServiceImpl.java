@@ -92,7 +92,7 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public MedicineDto loadMedications(Long droneId, String filePath, MedicineRequest medicineRequest) {
-        // the drone has to be available plus within weight limit to be loaded
+        // the drone has to be available plus within weight limit to be loaded with medications
         Drone drone = droneRepository.findById(droneId).orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId));
         checkWeighLimitAndAvailability(drone);
         Medicine medicine = new Medicine();
