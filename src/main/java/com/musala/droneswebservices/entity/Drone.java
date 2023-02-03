@@ -18,8 +18,6 @@ public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(min = 2, message = "serial number is too short requires a minmum of 2 characters")
-    @Size(max = 100, message = "serial number can not be longer than 100 characters}")
     private String serialNumber;
     private int batteryLevel;
     @Enumerated(EnumType.STRING)

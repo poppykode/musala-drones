@@ -6,6 +6,7 @@ import com.musala.droneswebservices.services.MedicineService;
 import com.musala.droneswebservices.services.impl.MedicineServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -33,8 +34,8 @@ public class MedicineController {
     @PostMapping("/load-drone/{droneId}")
     public ResponseEntity<MedicineDto> uploadFile(@Valid @RequestParam("image") MultipartFile image,
                                                   @PathVariable Long droneId,
-                                                  @RequestParam String name,
-                                                  @RequestParam String code,
+                                                  @RequestParam @Pattern(regexp = "[A-Za-z0-9-_]",message = "Only letters, numbers , underscores and dashes are allowed") String name,
+                                                  @RequestParam  @Pattern(regexp = "[A-Z0-9-_]",message = "Only upper case letters, numbers , underscores and dashes are allowed") String code,
                                                   @RequestParam float weight) {
         logger.info(name + " weight is "+ weight);
         String fileName = medicineService.storeFile(image);

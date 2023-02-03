@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 @Component
 public class BatteryLevelLogService {
     Logger logger = LoggerFactory.getLogger(BatteryLevelLogService.class);
@@ -21,15 +22,15 @@ public class BatteryLevelLogService {
 
     @Scheduled(fixedRate = 100000)
     public void reportBatteryLevelsForEachDrone() {
-        logger.trace("_______________________________________________");
-        logger.trace("Log Time: {}", dateFormat.format(new Date()));
-        logger.trace("___________________##########___________________");
+        logger.info("_______________________________________________");
+        logger.info("Log Time: {}", dateFormat.format(new Date()));
+        logger.info("___________________##########___________________");
         droneRepository.findAll()
                 .stream()
                 .forEach(drone ->  {
-                    logger.trace("Drone Serial No: {}  Battery Level: {}",drone.getSerialNumber(),drone.getBatteryLevel());
+                    logger.info("Drone Serial No: {}  Battery Level: {}%",drone.getSerialNumber(),drone.getBatteryLevel());
                 });
-        logger.trace("_______________________________________________");
+        logger.info("_______________________________________________");
 
 
 
