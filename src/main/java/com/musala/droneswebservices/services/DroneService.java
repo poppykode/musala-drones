@@ -8,6 +8,6 @@ import java.util.List;
 public interface DroneService {
 
     DroneDto registerDrone(DroneDto droneDto);
-    List<Drone> availableDrones();
+    List<DroneDto> availableDrones();
 
 }

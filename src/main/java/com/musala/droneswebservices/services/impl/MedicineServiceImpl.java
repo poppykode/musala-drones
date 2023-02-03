@@ -5,15 +5,19 @@ import com.musala.droneswebservices.entity.Drone;
 import com.musala.droneswebservices.entity.Medicine;
 import com.musala.droneswebservices.exception.DronesAPIException;
 import com.musala.droneswebservices.exception.ResourceNotFoundException;
+import com.musala.droneswebservices.payload.DroneDto;
 import com.musala.droneswebservices.payload.MedicineDto;
 import com.musala.droneswebservices.payload.MedicineRequest;
 import com.musala.droneswebservices.repository.DroneRepository;
 import com.musala.droneswebservices.repository.MedicineRepository;
+import com.musala.droneswebservices.services.DroneService;
 import com.musala.droneswebservices.services.MedicineService;
+import com.musala.droneswebservices.utils.AppConstants;
+import com.musala.droneswebservices.utils.ObjectMappers;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,12 +35,16 @@ import java.util.stream.Collectors;
 public class MedicineServiceImpl implements MedicineService {
     private final Path fileStorageLocation;
     private final DroneRepository droneRepository;
+
     private final MedicineRepository medicineRepository;
 
+    @Autowired
+    private  DroneService droneService;
     public MedicineServiceImpl(FileStorage fileStorage,DroneRepository droneRepository,MedicineRepository medicineRepository ) {
         this.fileStorageLocation = Paths.get(fileStorage.getUploadDir()).toAbsolutePath().normalize();
         this.droneRepository = droneRepository;
         this.medicineRepository = medicineRepository;
+
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
@@ -84,32 +92,44 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public MedicineDto loadMedications(Long droneId, String filePath, MedicineRequest medicineRequest) {
+        // the drone has to be available plus within weight limit to be loaded
         Drone drone = droneRepository.findById(droneId).orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId));
+        checkWeighLimitAndAvailability(drone);
         Medicine medicine = new Medicine();
         medicine.setDrone(drone);
         medicine.setImage(filePath);
         medicine.setName(medicineRequest.getName());
         medicine.setCode(medicineRequest.getCode());
         medicine.setWeight(medicineRequest.getWeight());
-        return mapToDto( medicineRepository.save(medicine));
+        return ObjectMappers.mapToDto( medicineRepository.save(medicine));
     }
+
+    private boolean checkWeighLimitAndAvailability(Drone drone){
+        // check if drone is available for loading
+        boolean isDroneAvailable = droneService.availableDrones().contains(ObjectMappers.mapToDroneDto(drone));
+        if (!isDroneAvailable){
+         throw new DronesAPIException("Drone is not available for loading");
+        }
+        // find current drone weight load
+        float currentDroneWeight = findLoadedMedicationsByDroneId(drone.getId())
+                .stream()
+                .map(droneItem -> droneItem.getWeight())
+                .reduce((float) 0,(total, droneItem) -> total + droneItem);
+
+        if(currentDroneWeight > AppConstants.WEIGHT_LIMIT_IN_GRAMS){
+           throw new DronesAPIException("Drone is at maximum capacity");
+        }
+        return true;
+    } 
+
 
     @Override
     public List<MedicineDto> findLoadedMedicationsByDroneId(Long droneId) {
         List<Medicine> drone = medicineRepository.findByDroneId(droneId);
-        return drone.stream().map(this::mapToDto).collect(Collectors.toList());
+        return drone.stream().map(ObjectMappers::mapToDto).collect(Collectors.toList());
     }
 
-    private MedicineDto mapToDto(Medicine medicine){
-        MedicineDto medicineDto = new MedicineDto();
-        medicineDto.setDroneId(medicine.getDrone().getId());
-        medicineDto.setImage(medicine.getImage());
-        medicineDto.setName(medicine.getName());
-        medicineDto.setCode(medicine.getCode());
-        medicineDto.setWeight(medicine.getWeight());
-        medicineDto.setId(medicine.getId());
-        return medicineDto;
-    }
+
 }
 
 

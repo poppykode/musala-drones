@@ -22,7 +22,6 @@ public class Drone {
     @Size(min = 2, message = "serial number is too short requires a minmum of 2 characters")
     @Size(max = 100, message = "serial number can not be longer than 100 characters}")
     private String serialNumber;
-    private float weight;
     private int capacity;
     @Enumerated(EnumType.STRING)
     private Model model;
