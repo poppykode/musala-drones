@@ -5,7 +5,6 @@ import com.musala.droneswebservices.entity.Drone;
 import com.musala.droneswebservices.entity.Medicine;
 import com.musala.droneswebservices.exception.DronesAPIException;
 import com.musala.droneswebservices.exception.ResourceNotFoundException;
-import com.musala.droneswebservices.payload.DroneDto;
 import com.musala.droneswebservices.payload.MedicineDto;
 import com.musala.droneswebservices.payload.MedicineRequest;
 import com.musala.droneswebservices.repository.DroneRepository;
@@ -15,6 +14,8 @@ import com.musala.droneswebservices.services.MedicineService;
 import com.musala.droneswebservices.utils.AppConstants;
 import com.musala.droneswebservices.utils.ObjectMappers;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -28,11 +29,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class MedicineServiceImpl implements MedicineService {
+    Logger logger = LoggerFactory.getLogger(MedicineServiceImpl.class);
     private final Path fileStorageLocation;
     private final DroneRepository droneRepository;
 
@@ -94,7 +97,7 @@ public class MedicineServiceImpl implements MedicineService {
     public MedicineDto loadMedications(Long droneId, String filePath, MedicineRequest medicineRequest) {
         // the drone has to be available plus within weight limit to be loaded with medications
         Drone drone = droneRepository.findById(droneId).orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId));
-        checkWeighLimitAndAvailability(drone);
+        checkWeightLimitAndAvailability(drone,medicineRequest.getWeight());
         Medicine medicine = new Medicine();
         medicine.setDrone(drone);
         medicine.setImage(filePath);
@@ -104,9 +107,10 @@ public class MedicineServiceImpl implements MedicineService {
         return ObjectMappers.mapToDto( medicineRepository.save(medicine));
     }
 
-    private boolean checkWeighLimitAndAvailability(Drone drone){
+    private boolean checkWeightLimitAndAvailability(Drone drone,float medicineWeight){
         // check if drone is available for loading
         boolean isDroneAvailable = droneService.availableDrones().contains(ObjectMappers.mapToDroneDto(drone));
+        logger.info("Drone availability: " + isDroneAvailable);
         if (!isDroneAvailable){
          throw new DronesAPIException("Drone is not available for loading");
         }
@@ -114,10 +118,10 @@ public class MedicineServiceImpl implements MedicineService {
         float currentDroneWeight = findLoadedMedicationsByDroneId(drone.getId())
                 .stream()
                 .map(droneItem -> droneItem.getWeight())
-                .reduce((float) 0,(total, droneItem) -> total + droneItem);
-
+                .reduce(medicineWeight,(total, droneItem) -> total + droneItem);
+        logger.info("Current drone weight: " + currentDroneWeight);
         if(currentDroneWeight > AppConstants.WEIGHT_LIMIT_IN_GRAMS){
-           throw new DronesAPIException("Drone is at maximum capacity");
+           throw new DronesAPIException("Drone has exceeded drone weight limit by " +  (AppConstants.WEIGHT_LIMIT_IN_GRAMS - currentDroneWeight));
         }
         return true;
     } 

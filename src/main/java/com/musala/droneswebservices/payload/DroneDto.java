@@ -8,7 +8,7 @@ import lombok.Data;
 public class DroneDto {
     private Long id;
     private String serialNumber;
-    private int capacity;
+    private int batteryLevel;
     private Model model;
     private State state;
 }

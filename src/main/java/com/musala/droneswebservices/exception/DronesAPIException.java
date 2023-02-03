@@ -7,14 +7,16 @@ public class DronesAPIException extends RuntimeException{
 
     private HttpStatus status;
     private String message;
+    private Throwable ex;
     public DronesAPIException(String message) {
-        super(message);
+        this.message = message;
     }
     public DronesAPIException(String message,Throwable ex) {
-        super(message,ex);
+        this.message = message;
+        this.ex = ex;
     }
     public DronesAPIException(HttpStatus status, String message) {
-        super(message);
+        this.message = message;
         this.status = status;
     }
 

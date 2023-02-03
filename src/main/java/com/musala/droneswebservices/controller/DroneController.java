@@ -27,4 +27,8 @@ public class DroneController {
     public ResponseEntity<List<DroneDto>> availableDrones(){
     return ResponseEntity.ok(droneService.availableDrones());
     }
+    @GetMapping("/check-battery-levels/{droneId}")
+    public ResponseEntity<Integer> checkDroneBatteryLevel(@PathVariable Long droneId){
+        return ResponseEntity.ok(droneService.checkDroneBatteryLevel(droneId));
+    }
 }

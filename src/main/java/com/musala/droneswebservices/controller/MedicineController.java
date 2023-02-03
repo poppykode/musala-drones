@@ -3,8 +3,11 @@ package com.musala.droneswebservices.controller;
 import com.musala.droneswebservices.payload.MedicineDto;
 import com.musala.droneswebservices.payload.MedicineRequest;
 import com.musala.droneswebservices.services.MedicineService;
+import com.musala.droneswebservices.services.impl.MedicineServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequestMapping("/api/v1/medicines")
 @RestController
 public class MedicineController {
+    Logger logger = LoggerFactory.getLogger(MedicineController.class);
     private final MedicineService medicineService;
 
     public MedicineController(MedicineService medicineService) {
@@ -32,6 +36,7 @@ public class MedicineController {
                                                   @RequestParam String name,
                                                   @RequestParam String code,
                                                   @RequestParam float weight) {
+        logger.info(name + " weight is "+ weight);
         String fileName = medicineService.storeFile(image);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/medicines")

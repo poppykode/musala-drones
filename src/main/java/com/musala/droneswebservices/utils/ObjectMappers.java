@@ -10,7 +10,7 @@ public class ObjectMappers {
         Drone drone = new Drone();
         drone.setId(droneDto.getId());
         drone.setSerialNumber(droneDto.getSerialNumber());
-        drone.setCapacity(droneDto.getCapacity());
+        drone.setBatteryLevel(droneDto.getBatteryLevel());
         drone.setState(droneDto.getState());
         drone.setModel(droneDto.getModel());
         return  drone;
@@ -21,7 +21,7 @@ public class ObjectMappers {
         DroneDto droneDto = new DroneDto();
         droneDto.setId(drone.getId());
         droneDto.setSerialNumber(drone.getSerialNumber());
-        droneDto.setCapacity(drone.getCapacity());
+        droneDto.setBatteryLevel(drone.getBatteryLevel());
         droneDto.setState(drone.getState());
         droneDto.setModel(drone.getModel());
         return  droneDto;

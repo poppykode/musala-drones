@@ -11,7 +11,6 @@ import com.musala.droneswebservices.utils.ObjectMappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,13 +34,13 @@ public class DroneServiceImpl implements DroneService {
         return droneRepository.findByState(State.IDLE)
                 .stream()
                 .map(ObjectMappers::mapToDroneDto)
-                .filter(drone ->  drone.getCapacity() > AppConstants.LOW_BATTERY_LEVEL)
+                .filter(drone ->  drone.getBatteryLevel() > AppConstants.LOW_BATTERY_LEVEL)
                 .collect(Collectors.toList());
     }
 
     @Override
     public int checkDroneBatteryLevel(Long droneId) {
         return  droneRepository.findById(droneId).
-                orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId)).getCapacity();
+                orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId)).getBatteryLevel();
     }
 }
