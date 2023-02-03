@@ -3,6 +3,7 @@ package com.musala.droneswebservices.services.impl;
 import com.musala.droneswebservices.entity.Drone;
 import com.musala.droneswebservices.entity.State;
 import com.musala.droneswebservices.exception.ResourceNotFoundException;
+import com.musala.droneswebservices.payload.BatteryLevelResponse;
 import com.musala.droneswebservices.payload.DroneDto;
 import com.musala.droneswebservices.repository.DroneRepository;
 import com.musala.droneswebservices.services.DroneService;
@@ -39,8 +40,11 @@ public class DroneServiceImpl implements DroneService {
     }
 
     @Override
-    public int checkDroneBatteryLevel(Long droneId) {
-        return  droneRepository.findById(droneId).
-                orElseThrow(() -> new ResourceNotFoundException("Drone","id",droneId)).getBatteryLevel();
+    public BatteryLevelResponse checkDroneBatteryLevel(Long droneId) {
+        int batteryLevel = droneRepository.findById(droneId).
+                orElseThrow(() -> new ResourceNotFoundException("Drone", "id", droneId)).getBatteryLevel();
+        BatteryLevelResponse batteryLevelResponse = new BatteryLevelResponse();
+        batteryLevelResponse.setBatteryLevel(String.valueOf(batteryLevel) + "%");
+        return  batteryLevelResponse;
     }
 }

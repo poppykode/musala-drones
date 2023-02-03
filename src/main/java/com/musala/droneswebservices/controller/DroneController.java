@@ -1,5 +1,6 @@
 package com.musala.droneswebservices.controller;
 
+import com.musala.droneswebservices.payload.BatteryLevelResponse;
 import com.musala.droneswebservices.payload.DroneDto;
 import com.musala.droneswebservices.services.DroneService;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class DroneController {
     return ResponseEntity.ok(droneService.availableDrones());
     }
     @GetMapping("/check-battery-levels/{droneId}")
-    public ResponseEntity<Integer> checkDroneBatteryLevel(@PathVariable Long droneId){
+    public ResponseEntity<BatteryLevelResponse> checkDroneBatteryLevel(@PathVariable Long droneId){
         return ResponseEntity.ok(droneService.checkDroneBatteryLevel(droneId));
     }
 }

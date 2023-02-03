@@ -29,7 +29,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +52,31 @@ public class MedicineServiceImpl implements MedicineService {
         } catch (Exception ex) {
             throw new DronesAPIException(
                     "Unable to create the directory where the uploaded files will be stored.", ex);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 
@@ -121,7 +145,7 @@ public class MedicineServiceImpl implements MedicineService {
                 .reduce(medicineWeight,(total, droneItem) -> total + droneItem);
         logger.info("Current drone weight: " + currentDroneWeight);
         if(currentDroneWeight > AppConstants.WEIGHT_LIMIT_IN_GRAMS){
-           throw new DronesAPIException("Drone has exceeded drone weight limit by " +  (AppConstants.WEIGHT_LIMIT_IN_GRAMS - currentDroneWeight));
+           throw new DronesAPIException("Drone has exceeded drone weight limit by " +  ( currentDroneWeight - AppConstants.WEIGHT_LIMIT_IN_GRAMS));
         }
         return true;
     } 
