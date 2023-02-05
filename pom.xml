@@ -14,7 +14,7 @@
 	<name>drones-web-services</name>
 	<description>interview exercise on drones transportation</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

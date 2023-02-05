@@ -110,7 +110,6 @@ public class MedicineServiceImpl implements MedicineService {
     private boolean checkWeightLimitAndAvailability(Drone drone,float medicineWeight){
         // check if drone is available for loading
         boolean isDroneAvailable = droneService.availableDrones().contains(ObjectMappers.mapToDroneDto(drone));
-        logger.info("Drone availability: " + isDroneAvailable);
         if (!isDroneAvailable){
          throw new DronesAPIException("Drone is not available for loading");
         }
@@ -119,7 +118,6 @@ public class MedicineServiceImpl implements MedicineService {
                 .stream()
                 .map(droneItem -> droneItem.getWeight())
                 .reduce(medicineWeight,(total, droneItem) -> total + droneItem);
-        logger.info("Current drone weight: " + currentDroneWeight);
         if(currentDroneWeight > AppConstants.WEIGHT_LIMIT_IN_GRAMS){
            throw new DronesAPIException("Drone has exceeded drone weight limit by " +  ( currentDroneWeight - AppConstants.WEIGHT_LIMIT_IN_GRAMS));
         }
