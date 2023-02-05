@@ -1,5 +1,5 @@
 # musala-drones
-this project has 5 Rest APIs to do the following
+This project has 5 Rest APIs to do the following
 - registering a drone;
 - loading a drone with medication items;
 - checking loaded medication items for a given drone; 
@@ -15,6 +15,6 @@ Pre requisites to run the project
 - Availability of docker environment and Postman
 
 Commands for running the project in Docker environment
-- with the project files in the termina run "docker compose up"
+- within the project files in the terminal run "docker compose up" to start the project
 
 
