@@ -7,15 +7,17 @@ https://api.postman.com/collections/922269-b19acfd5-47cb-4182-afba-49ca57beb763?
 - checking available drones for loading;
 - check drone battery level for a given drone;
 
-Pre Assumptions
+Pre-assumptions
 - only a drone in IDLE state can be loaded with medications
 - a drone is available for loading if its IDLE and has a battery level of above 25%
 - a drone can not be loaded above its max capacity (500grams)
 
-Pre requisites to run the project
+Pre-requisites to run the project
 - Availability of docker environment and Postman
 
 Commands for running the project in Docker environment
+- firstly clone the repository and open it with your favourite IDE
 - within the project files in the terminal run "docker compose up" to start the project
+- use  the postman collection to test the Restfull APIs
 
 
