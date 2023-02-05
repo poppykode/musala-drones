@@ -1,5 +1,6 @@
 # musala-drones
 This project has 5 Rest APIs to do the following
+https://api.postman.com/collections/922269-b19acfd5-47cb-4182-afba-49ca57beb763?access_key=PMAT-01GRGPGEXMCYYZ39PTFBRD4D9Y
 - registering a drone;
 - loading a drone with medication items;
 - checking loaded medication items for a given drone; 
