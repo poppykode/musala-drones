@@ -53,7 +53,6 @@ public class MedicineServiceImpl implements MedicineService {
         } catch (Exception ex) {
             throw new DronesAPIException(
                     "Unable to create the directory where the uploaded files will be stored.", ex);
-
         }
     }
 
