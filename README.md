@@ -19,6 +19,6 @@ Commands for running the project in Docker environment
 - firstly clone the repository and open it with your favourite IDE
 - within the project files in the terminal run "docker compose up" to run the project or "docker compose up -d" to run in the background.
 - run "docker compose stop" to stop the services if running in the background or just "control c"
-- use  the postman collection to test the Restfull APIs
+- open postman and import collection as link (https://api.postman.com/collections/922269-b19acfd5-47cb-4182-afba-49ca57beb763?access_key=PMAT-01GRGPGEXMCYYZ39PTFBRD4D9Y) then use the imported collection to test the Restfull APIs
 
 
